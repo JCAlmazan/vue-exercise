@@ -1,5 +1,7 @@
 <template>
-  <h1> Hello world! </h1>
+  <v-app>
+    <Table/>
+  </v-app>
 </template>
 
 <script>
