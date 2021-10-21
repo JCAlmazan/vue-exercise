@@ -17,6 +17,9 @@
         :items="coins"
         :search="search"
       ></v-data-table>
+      <v-btn color="teal" dark absolute bottom left fab @click="$fetch">
+        <v-icon>mdi-refresh</v-icon>
+      </v-btn>
     </v-card>
   </v-col>
 </template>
