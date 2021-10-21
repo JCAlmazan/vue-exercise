@@ -1,10 +1,13 @@
 <template>
   <v-col md="9">
     <v-card elevation="10" class="text-center">
+      <!-- Hide card while loading -->
       <v-card-text v-if="!loading">
+        <!-- Coin name title -->
         <p class="text-h3 text--primary">
           {{ coin.symbol }}
         </p>
+        <!-- Coin data details -->
         <v-col class="columns">
           <div class="text--primary ma-5">
             <h2>Price Change: {{ coin.priceChange }}</h2>
@@ -68,6 +71,7 @@
           </div>
         </v-col>
       </v-card-text>
+      <!-- Loading animation when fetch -->
       <v-progress-linear
         :active="loading"
         :indeterminate="loading"

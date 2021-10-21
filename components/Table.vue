@@ -4,14 +4,17 @@
       <v-card-title>
         Cryptocurrencies
         <v-spacer></v-spacer>
+        <!-- Add coin field -->
         <v-text-field @keyup.enter="addCoin" label="Add Coin"></v-text-field>
         <v-spacer></v-spacer>
+        <!-- Search coin bar -->
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
           label="Search Coin"
         ></v-text-field>
       </v-card-title>
+      <!-- Coins data table -->
       <v-data-table
         :headers="headers"
         :items="coins"
@@ -19,15 +22,18 @@
         class="elevation-1"
         v-if="!loading"
       >
+        <!-- Actions field -->
         <template v-slot:item.actions="{ item }">
+          <!-- View coin details link -->
           <NuxtLink
             :to="'/coin?symbol=' + item.symbol"
             style="text-decoration: none"
             ><v-icon small class="mr-2"> mdi-eye </v-icon></NuxtLink
           >
-          <v-icon small @click="removeCoin(item)"> mdi-delete </v-icon>
+          <!-- v-icon small @click="removeCoin(item)"> mdi-delete </v-icon -->
         </template>
       </v-data-table>
+      <!-- Loading animation when fetch -->
       <v-progress-linear
         :active="loading"
         :indeterminate="loading"
@@ -35,6 +41,7 @@
         bottom
         color="teal accent-4"
       ></v-progress-linear>
+      <!-- Reload table button -->
       <v-btn
         color="teal"
         class="ma-2 white--text"
@@ -95,11 +102,12 @@ export default {
       e.target.value = "";
       this.$fetch();
     },
+    /* Don't work properly
     removeCoin(coin) {
       this.loading = true;
       this.$store.commit("coins/remove", coin);
       this.$fetch();
-    },
+    },*/
     refresh() {
       this.loading = true;
       this.$fetch();
