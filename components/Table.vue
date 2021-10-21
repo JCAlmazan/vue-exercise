@@ -17,20 +17,24 @@
         :items="coins"
         sort-by="symbol"
         class="elevation-1"
+        v-if="!loading"
       >
         <template v-slot:item.actions="{ item }">
-          <NuxtLink :to="'/coin?symbol=' + item.symbol" style="text-decoration: none;"><v-icon small class="mr-2"> mdi-eye </v-icon></NuxtLink>
+          <NuxtLink
+            :to="'/coin?symbol=' + item.symbol"
+            style="text-decoration: none"
+            ><v-icon small class="mr-2"> mdi-eye </v-icon></NuxtLink
+          >
           <v-icon small @click="removeCoin(item)"> mdi-delete </v-icon>
         </template>
-        <template v-slot:no-data>
-          <v-progress-linear
-            color="teal accent-4"
-            indeterminate
-            rounded
-            height="6"
-          ></v-progress-linear>
-        </template>
       </v-data-table>
+      <v-progress-linear
+        :active="loading"
+        :indeterminate="loading"
+        absolute
+        bottom
+        color="teal accent-4"
+      ></v-progress-linear>
       <v-btn
         color="teal"
         class="ma-2 white--text"
@@ -67,7 +71,7 @@ export default {
       ],
       coins: [],
       list: this.$store.state.coins.list,
-      loading: false,
+      loading: true,
     };
   },
   activated() {
@@ -82,28 +86,23 @@ export default {
     ).then((res) => res.json());
     //filter all api coins with our local storage list of coins
     this.coins = this.coins.filter((coin) => this.list.includes(coin.symbol));
+    this.loading = false;
   },
   methods: {
     addCoin(e) {
+      this.loading = true;
       this.$store.commit("coins/add", e.target.value);
       e.target.value = "";
       this.$fetch();
     },
     removeCoin(coin) {
+      this.loading = true;
       this.$store.commit("coins/remove", coin);
       this.$fetch();
-      this.loading = true;
     },
-    refresh(){
+    refresh() {
+      this.loading = true;
       this.$fetch();
-      this.loading = true;
-    },
-  },
-  watch: {
-    loading(val) {
-      if (!val) return
-
-      setTimeout(() => (this.loading = false), 2000);
     },
   },
 };
