@@ -4,23 +4,44 @@
       <v-card-title>
         Cryptocurrencies
         <v-spacer></v-spacer>
-        <v-text-field
-          @keyup.enter="addCoin"
-          label="Add Coin"
-        ></v-text-field>
+        <v-text-field @keyup.enter="addCoin" label="Add Coin"></v-text-field>
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          label="Search Coin"
         ></v-text-field>
       </v-card-title>
       <v-data-table
         :headers="headers"
         :items="coins"
-        :search="search"
-      ></v-data-table>
-      <v-btn color="teal" dark absolute bottom left fab @click="$fetch">
+        sort-by="symbol"
+        class="elevation-1"
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="mr-2"> mdi-eye </v-icon>
+          <v-icon small @click="removeCoin(item)"> mdi-delete </v-icon>
+        </template>
+        <template v-slot:no-data>
+          <v-progress-linear
+            color="teal accent-4"
+            indeterminate
+            rounded
+            height="6"
+          ></v-progress-linear>
+        </template>
+      </v-data-table>
+      <v-btn
+        color="teal"
+        class="ma-2 white--text"
+        absolute
+        bottom
+        left
+        fab
+        @click="refresh"
+        :loading="loading"
+        :disabled="loading"
+      >
         <v-icon>mdi-refresh</v-icon>
       </v-btn>
     </v-card>
@@ -42,9 +63,11 @@ export default {
         { text: "weightedAvgPrice", value: "weightedAvgPrice" },
         { text: "volume", value: "volume" },
         { text: "priceChange", value: "priceChange" },
+        { text: "Actions", value: "actions", sortable: false },
       ],
       coins: [],
       list: this.$store.state.coins.list,
+      loading: false,
     };
   },
   activated() {
@@ -65,10 +88,62 @@ export default {
       this.$store.commit("coins/add", e.target.value);
       e.target.value = "";
       this.$fetch();
-    },/*
-    removeCoin(e) {
-      this.$store.commit("coins/remove", e.target.id);
-    },*/
+    },
+    removeCoin(coin) {
+      this.$store.commit("coins/remove", coin);
+      this.$fetch();
+      this.loading = true;
+    },
+    refresh(){
+      this.$fetch();
+      this.loading = true;
+    },
+  },
+  watch: {
+    loading(val) {
+      if (!val) return
+
+      setTimeout(() => (this.loading = false), 2000);
+    },
   },
 };
 </script>
+
+<style>
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
