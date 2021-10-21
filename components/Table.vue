@@ -19,7 +19,7 @@
         class="elevation-1"
       >
         <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-2"> mdi-eye </v-icon>
+          <NuxtLink :to="'/coin?symbol=' + item.symbol" style="text-decoration: none;"><v-icon small class="mr-2"> mdi-eye </v-icon></NuxtLink>
           <v-icon small @click="removeCoin(item)"> mdi-delete </v-icon>
         </template>
         <template v-slot:no-data>

@@ -2,7 +2,7 @@
   <v-app>
     <NavBar/>
     <v-container fill-height justify-center>
-      <Table/>
+      <ViewCoin/>
     </v-container>
     <Footer/>
   </v-app>
