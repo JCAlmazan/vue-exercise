@@ -1,24 +1,24 @@
 <template>
-  <v-card>
-    <v-card-title>
-      Cryptocurrencies
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      loading
-      loading-text="Loading... Please wait"
-      :headers="headers"
-      :items="coins"
-      :search="search"
-    ></v-data-table>
-  </v-card>
+  <v-col md="9">
+    <v-card elevation="10">
+      <v-card-title>
+        Cryptocurrencies
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="coins"
+        :search="search"
+      ></v-data-table>
+    </v-card>
+  </v-col>
 </template>
 
 <script>
