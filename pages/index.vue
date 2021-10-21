@@ -1,6 +1,10 @@
 <template>
   <v-app>
-    <Table/>
+    <NavBar/>
+    <v-container fill-height justify-center>
+      <Table/>
+    </v-container>
+    <Footer/>
   </v-app>
 </template>
 
