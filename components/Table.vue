@@ -5,11 +5,14 @@
         Cryptocurrencies
         <v-spacer></v-spacer>
         <v-text-field
+          @keyup.enter="addCoin"
+          label="Add Coin"
+        ></v-text-field>
+        <v-spacer></v-spacer>
+        <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
           label="Search"
-          single-line
-          hide-details
         ></v-text-field>
       </v-card-title>
       <v-data-table
@@ -41,6 +44,7 @@ export default {
         { text: "priceChange", value: "priceChange" },
       ],
       coins: [],
+      list: this.$store.state.coins.list,
     };
   },
   activated() {
@@ -53,16 +57,18 @@ export default {
     this.coins = await fetch(
       "https://api2.binance.com/api/v3/ticker/24hr"
     ).then((res) => res.json());
-    //this is temporary they would like to add more coins in the future
-    this.coins = this.coins.filter(
-      (coin) =>
-        coin.symbol === "BTCUSDT" ||
-        coin.symbol === "ETHUSDT" ||
-        coin.symbol === "ADAUSDT" ||
-        coin.symbol === "LTCUSDT" ||
-        coin.symbol === "AXSUSDT" ||
-        coin.symbol === "BNBUSDT"
-    );
+    //filter all api coins with our local storage list of coins
+    this.coins = this.coins.filter((coin) => this.list.includes(coin.symbol));
+  },
+  methods: {
+    addCoin(e) {
+      this.$store.commit("coins/add", e.target.value);
+      e.target.value = "";
+      this.$fetch();
+    },/*
+    removeCoin(e) {
+      this.$store.commit("coins/remove", e.target.id);
+    },*/
   },
 };
 </script>
